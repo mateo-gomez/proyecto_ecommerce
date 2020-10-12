@@ -10,11 +10,11 @@ app.get('/', (request, response)=>{
     response.send("Hola mundo")
 })
 
-app.get('/users', (request,response)=>{
-    const users = Users.findAll();
+app.get('/users', async (request,response)=>{
+    const users = await Users.findAll();
     response.json(
         {
-            results:[]
+            results: users
         }
     )
 })

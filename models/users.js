@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         through: 'user_roles',
         foreignKey: 'user_id'
       })
-     Users.belongsTo(models.SalesOrders, {
+     Users.hasMany(models.SalesOrders, {
        as: 'sales_orders',
        foreignKey: 'user_id'
      })
