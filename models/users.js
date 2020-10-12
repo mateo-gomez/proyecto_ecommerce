@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.hasOne(models.Roles, {foreignKey:'id', as: 'roles'})
+      
     }
   };
   Users.init({
@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Users',
     tableName: 'users',
+    underscored: true,
   });
   return Users;
 };

@@ -5,7 +5,6 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class UserRoles extends Model {
     static associate(models) {
-      UserRoles.belongsTo(models.Users, {foreignKey: 'user_id', as: 'users'})
       
     }
   };
@@ -15,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UserRoles',
-    tableName: 'user_roles'
+    tableName: 'user_roles',
+    underscored: true
   });
   return UserRoles;
 };
