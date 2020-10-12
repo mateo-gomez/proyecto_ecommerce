@@ -4,13 +4,15 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Sessions extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Sessions.belongsTo(models.Users, {
+        as: 'users',
+        foreignKey: 'id'
+      })
+      Sessions.belongsTo(models.SalesOrders, {
+        as: 'sales_orders',
+        foreignKey: 'session_id'
+      })
     }
   };
   Sessions.init({

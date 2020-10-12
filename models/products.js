@@ -8,7 +8,16 @@ module.exports = (sequelize, DataTypes) => {
       Products.belongsToMany(models.Categories, {
         as: 'categories',
         through: 'product_categories',
-        foreignKey: 'category_id',
+        foreignKey: 'product_id',
+      })
+      Products.hasMany(models.ProductStatuses, {
+        as: 'product_statuses',
+        foreignKey: 'id'
+      })
+      Products.belongsToMany(models.Tags, {
+        as: 'tags',
+        through: 'product_tags',
+        foreignKey: 'product_id'
       })
     }
   };

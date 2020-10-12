@@ -1,8 +1,9 @@
-const { request, response } = require('express');
-const express = require('express');
+const { request, response } = require('express')
+const express = require('express')
+const {Users} = require('./models')
 
-const app = express();
-const {users} = require('./models')
+const app = express()
+
 
 //Middleware
 app.get('/', (request, response)=>{
@@ -10,6 +11,7 @@ app.get('/', (request, response)=>{
 })
 
 app.get('/users', (request,response)=>{
+    const users = Users.findAll();
     response.json(
         {
             results:[]

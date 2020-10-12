@@ -5,6 +5,15 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
+      Users.belongsToMany(models.Roles, {
+        as: 'roles',
+        through: 'user_roles',
+        foreignKey: 'user_id'
+      })
+     Users.belongsTo(models.SalesOrders, {
+       as: 'sales_orders',
+       foreignKey: 'user_id'
+     })
       
     }
   };
