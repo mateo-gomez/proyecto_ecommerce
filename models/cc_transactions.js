@@ -5,9 +5,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class CCTransactions extends Model {
     static associate(models) {
-      CCTransactions.hasOne(models.SalesOrders, {
+      CCTransactions.belongsTo(models.SalesOrders, {
         as: 'sales_orders',
-        foreignKey: 'id'
+        foreignKey: 'order_id'
       })
     }
   };

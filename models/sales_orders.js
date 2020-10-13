@@ -5,25 +5,23 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class SalesOrders extends Model {
     static associate(models) {
-      SalesOrders.hasMany(models.Coupons, {
+      SalesOrders.belongsTo(models.Coupons, {
         as: 'coupons',
-        foreignKey: 'id'
+        foreignKey: 'coupon_id'
       })
-      SalesOrders.hasOne(models.Sessions, {
+      SalesOrders.belongsTo(models.Sessions, {
         as: 'sessions',
-        foreignKey: 'id'
+        foreignKey: 'session_id'
       })
       SalesOrders.belongsTo(models.Users, {
         as: 'users',
-        foreignKey: 'id'
+        foreignKey: 'user_id'
       })
-      SalesOrders.belongsTo(models.CCTransactions, {
+      SalesOrders.hasMany(models.CCTransactions, {
         as: 'cc_transactions',
-        foreignKey: 'order_id'
       })
-      SalesOrders.belongsTo(models.OrderProducts, {
+      SalesOrders.hasMany(models.OrderProducts, {
         as: 'order_products',
-        foreignKey: 'order_id'
       })
     }
   };

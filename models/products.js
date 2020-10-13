@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
         through: 'product_categories',
         foreignKey: 'product_id',
       })
-      Products.hasMany(models.ProductStatuses, {
+      Products.belongsTo(models.ProductStatuses, {
         as: 'product_statuses',
-        foreignKey: 'id'
+        foreignKey: 'product_status_id'
       })
       Products.belongsToMany(models.Tags, {
         as: 'tags',

@@ -9,8 +9,8 @@ const user = [{
     active: true,
     password: 'lapassword',
     token : 'h4kfg27rjd',
-    created_at: new Date(),
-    updated_at: new Date()
+    createdAt: new Date(),
+    updatedAt: new Date()
 },
 {
   email: 'ejemplo2@gmail.com',
@@ -19,8 +19,8 @@ const user = [{
   active: true,
   password: 'lapassword',
   token : 'h4kfg27rjd',
-  created_at: new Date(),
-  updated_at: new Date()
+  createdAt: new Date(),
+  updatedAt: new Date()
 }]
 
 module.exports = {

@@ -9,9 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'users',
         foreignKey: 'id'
       })
-      Sessions.belongsTo(models.SalesOrders, {
+      Sessions.hasMany(models.SalesOrders, {
         as: 'sales_orders',
-        foreignKey: 'session_id'
       })
     }
   };

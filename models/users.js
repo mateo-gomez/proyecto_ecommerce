@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       })
      Users.hasMany(models.SalesOrders, {
        as: 'sales_orders',
-       foreignKey: 'user_id'
      })
       
     }
@@ -28,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Users',
     tableName: 'users',
-    underscored: true,
   });
   return Users;
 };
