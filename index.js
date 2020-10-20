@@ -3,7 +3,7 @@ const { Users, Roles} = require('./models')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const sendMail = require('./middlewares/nodemailer')
-//const validationToken = require('./middlewares/auth')
+const validationToken = require('./middlewares/auth')
 const app = express()
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
@@ -20,7 +20,7 @@ app.get('/', (_, response)=>{
     response.send("Hola mundo")
 })
 
-//app.use(validationToken)
+app.use(validationToken)
 
 
 app.listen(3000, ()=>{
