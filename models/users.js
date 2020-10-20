@@ -6,14 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
       Users.belongsToMany(models.Roles, {
-        as: 'roles',
-        through: 'user_roles',
+        through:'user_roles',
+        as: 'roles',  
         foreignKey: 'user_id'
       })
      Users.hasMany(models.SalesOrders, {
        as: 'sales_orders',
      })
-      
     }
   };
   Users.init({
