@@ -10,6 +10,8 @@ const {
     updatePassword
 
 } = require('../controllers/auth')
+const { validationToken } = require('../middlewares/auth')
+
 
 router.post('/api/v1/users/login', login)
 router.post('/api/v1/users/logout', logout)

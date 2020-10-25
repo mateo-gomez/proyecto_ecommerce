@@ -1,21 +1,21 @@
 'use strict';
 
 const users = [{
-  email: "luis20@gmail.com",
+  email: "luisvittory@gmail.com",
   first_name: "Luis",
   last_name: "Gutierrez",
-  password: 'luis08',
-  token: 'sajdaopwpoqe',
-  active: false,
+  password: '$2a$10$fxSAHHYZiV6kMBs0y1fiU.rnQ/6cqZ77iiCAmVfHHzF4fwB5v4ETK',
+  token: 'asdfg',
+  active: true,
   createdAt: new Date(),
   updatedAt: new Date()
 },
 {
-  email: "ana07@gmail.com",
-  first_name: "Ana",
+  email: "motokoviloria@gmail.com",
+  first_name: "Alberto",
   last_name: "Gutierrez",
-  password: 'ana12345',
-  token: 'sajdaopsas123wpoqe',
+  password: '$2a$10$fxSAHHYZiV6kMBs0y1fiU.rnQ/6cqZ77iiCAmVfHHzF4fwB5v4ETK',
+  token: 'spoqe',
   active: true,
   createdAt: new Date(),
   updatedAt: new Date()
@@ -37,6 +37,12 @@ let userRoles = [{
     role_id: 6, 
     createdAt: new Date(),
     updatedAt: new Date()
+},
+{
+  user_id: 2,
+  role_id: 6, 
+  createdAt: new Date(),
+  updatedAt: new Date()
 }];
 
 module.exports = {
@@ -45,14 +51,21 @@ module.exports = {
     let rolesR = await queryInterface.bulkInsert('roles', roles, {returning: true});
     let usersR = await queryInterface.bulkInsert('users', users, {returning: true});
 
-    let {id: adminId} = rolesR.find( role => role.name === 'Administrador');
+    let {id: adminId_0} = rolesR.find( role => role.name === 'Administrador');
     // let adminId = rolesR.find( role => role.name === 'Administrador').id;
-    let {id: userId} = usersR.find( user => user.email === 'luis20@gmail.com');
+    let {id: userId_0} = usersR.find( user => user.email === 'luisvittory@gmail.com');
     // let userId = usersR.find( user => user.email === 'luis20@gmail.com').id;
-    userRoles[0].user_id = userId;
-    userRoles[0].role_id = adminId;
+    let {id: adminId_1} = rolesR.find( role => role.name === 'Cliente');
+    let {id: userId_1} = usersR.find( user => user.email === 'motokoviloria@gmail.com');
+    
+    userRoles[0].user_id = userId_0;
+    userRoles[0].role_id = adminId_0;
+
+    userRoles[1].user_id = userId_1;
+    userRoles[1].role_id = adminId_1;
+
     let userRolesR = await queryInterface.bulkInsert('user_roles', userRoles, {returning: true});
-    console.log(rolesR, usersR, userRolesR);
+    //console.log(rolesR, usersR, userRolesR);
   },
 
   down: async (queryInterface, Sequelize) => {

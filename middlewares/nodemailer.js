@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer')
-const fs = require('fs')
+require('dotenv').config()
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -9,19 +9,21 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const mailOptions = {
-    from: process.env.G_ACC,
-    to: 'motokoviloria@gmail.com',
-    subject: 'MENSAJE DE NODE',
-    text: 'Cuerpo del mensaje',
-    //html: fs.createReadStream('plantilla.html')
+const mailOptions = (email, userId, token)=> {
+    return {
+            from: process.env.G_ACC,
+            to: email,
+            subject: 'MENSAJE DE NODE',
+            text: 'Mensaje',
+            html: `<h1>Restablecer contraseña</h1> 
+            <a href="http://localhost:3000/actualizar-contrasena?user=${userId}&token=${token}">Da click aquí</a>`
+    }
 }
 
-const sendMail = (to, text) => {
+const sendMail = (email, userId, token) => {
     return new Promise((resolve, reject)=>{
-        mailOptions.text = text
-        mailOptions.to = to
-        transporter.sendMail(mailOptions, (err, info)=>{
+    
+        transporter.sendMail(mailOptions(email, userId, token), (err, info) => {
             if (err) {
                 reject(err.message)
             } else {

@@ -1,22 +1,35 @@
+const {Users, Roles} = require('../models');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const {generateToken} = require('./auth')
+
 
 const register = async (req, res) => {
     
-    let {email,first_name,last_name,active,password,token,} = req.body
-    const encryptedPassword = bcrypt.hashSync(password,10)
-    const user = await Users.create({
-        email,
-        first_name,
-        last_name,
-        active,
-        password: encryptedPassword,
-        token,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    })
-     res.json({message: "Usuario fue agregado correctamente"})
+    try {
+        
+        let {email,first_name,last_name, password} = req.body
+        const encryptedPassword = bcrypt.hashSync(password,10)
+        const user = await Users.create({
+            email,
+            first_name,
+            last_name,
+            active: true,
+            password: encryptedPassword,
+            token: generateToken(10),
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+        res.json({message: "Usuario fue agregado correctamente", user})
+
+    } catch (error) {
+        res.json({
+            message: "Algo salio mal", error
+        })
+    }
 };
 
-const findAll = async (request,response) => {
+const findAll = async (_,response) => {
 
     const users = await Users.findAll({
         include: [{
@@ -27,7 +40,7 @@ const findAll = async (request,response) => {
             through: { attributes: []}
         }]
     });
-    response.json({ results: users })
+    response.json(users)
 
 }
 
@@ -77,17 +90,21 @@ const update = async (request, response) => {
     let userId = request.params.id;
     let {first_name, last_name, email, active, token, password} = request.body;
     try{
+        const encryptedPassword = bcrypt.hashSync(password,10)
         const users = await Users.update({
             first_name,
             last_name,
             email,
             active,
             token,
-            password,
+            password: encryptedPassword,
             updated_at: new Date()
         }, { returning: true, where: {id: userId} });
         const user = users[1][0].dataValues;
-        response.json(user);
+        response.json({
+            message: "Informacion de usuario actualizada",
+            users
+        });
     }catch(error){
         response.status(400).json({
             message: "No se ha podido actualizar el registro"
