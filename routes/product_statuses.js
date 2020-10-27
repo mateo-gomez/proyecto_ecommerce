@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {validationToken, grantAcces} = require('../middlewares/auth')
+const {grantAcces} = require('../middlewares/auth')
 const {addPS, updatePS, deletePS, getPS} = require('../controllers/product_statuses')
 
 router.get('/api/v1/PS/All', grantAcces('readAny', 'product_statuses'), getPS)
