@@ -17,6 +17,9 @@ const pcRouter = require('./routes/product_categories')
 const rolesRouter = require('./routes/roles')
 const tagsRouter = require('./routes/tags')
 const sessionsRouter = require('./routes/sessions')
+const ptRouter = require('./routes/product_tags')
+const couponsRouter = require('./routes/coupons')
+const soRouter = require('./routes/sales_orders')
 
 
 //Middleware
@@ -37,6 +40,9 @@ app.use(pcRouter)
 app.use(rolesRouter)
 app.use(tagsRouter)
 app.use(sessionsRouter)
+app.use(ptRouter)
+app.use(couponsRouter)
+app.use(soRouter)
 
 app.get('/', (_, response)=>{
     response.send("Hola mundo")

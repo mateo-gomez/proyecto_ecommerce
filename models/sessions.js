@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       })
       Sessions.hasMany(models.SalesOrders, {
         as: 'sales_orders',
+        foreignKey: 'id'
       })
     }
   };
