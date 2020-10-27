@@ -10,6 +10,7 @@ module.exports = {
       },
       category_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:{
           model:'categories',
           key:'id'
@@ -17,6 +18,7 @@ module.exports = {
       },
       product_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:{
           model:'products',
           key:'id'

@@ -27,11 +27,11 @@ const login = async (req, res)=>{
                     firstName: user.first_name,
                     lastName: user.last_name,
                     roles: user.roles
-                }, process.env.SECRET_WORD, {expiresIn: '3m'})
+                }, process.env.SECRET_WORD, {expiresIn: '20m'})
                 
                 res
                 .cookie('token_access', token, {
-                    expires: new Date( Date.now() + 3 * 60000)
+                    expires: new Date( Date.now() + 20 * 60000)
                 })
                 .status(200)
                 .json({message:"Iniciaste sesion correctamente"})

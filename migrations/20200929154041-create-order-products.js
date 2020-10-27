@@ -10,6 +10,7 @@ module.exports = {
       },
       order_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:{
           model:'sales_orders',
           key:'id'

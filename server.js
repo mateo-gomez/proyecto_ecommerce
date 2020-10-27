@@ -10,6 +10,10 @@ const cors = require('cors')
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const userRolesRouter = require('./routes/user_roles')
+const catRouter = require('./routes/categories')
+const psRouter = require('./routes/product_statuses')
+const productsRouter = require('./routes/products')
+const pcRouter = require('./routes/product_categories')
 
 
 //Middleware
@@ -18,10 +22,15 @@ app.use(morgan('dev'))
 app.use(cors())
 app.use(cookieParser())
 
+//ROUTES
 app.use(authRouter)
 app.use(validationToken)
 app.use(userRouter)
 app.use(userRolesRouter)
+app.use(catRouter)
+app.use(psRouter)
+app.use(productsRouter)
+app.use(pcRouter)
 
 app.get('/', (_, response)=>{
     response.send("Hola mundo")

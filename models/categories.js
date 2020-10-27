@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
+
   class Categories extends Model {
     static associate(models) {
       Categories.belongsToMany(models.Products, {
@@ -21,4 +22,5 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'categories'
   });
   return Categories;
+  
 };

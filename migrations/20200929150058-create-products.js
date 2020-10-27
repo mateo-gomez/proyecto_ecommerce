@@ -9,12 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       sku: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       description: {
+        allowNull: false,
         type: Sequelize.TEXT
       },
       product_status_id: {
@@ -25,16 +30,19 @@ module.exports = {
         }
       },
       regular_price: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL,
+        allowNull: false
       },
       discount_price: {
         type: Sequelize.DECIMAL
       },
       quantity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       taxable: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

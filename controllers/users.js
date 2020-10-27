@@ -1,14 +1,22 @@
-const {Users, Roles} = require('../models');
+const {Users, Roles, UserRoles} = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {generateToken} = require('./auth')
 
 
 const register = async (req, res) => {
-    
-    try {
         
-        let {email,first_name,last_name, password} = req.body
+    let {email,first_name,last_name, password} = req.body
+    const userExist = await Users.findOne({where:{email: email}})
+
+    if (userExist) {
+
+        res.status(400).json({
+            message: 'Usuario Ya Registrado'
+        })
+    
+    } else {
+        
         const encryptedPassword = bcrypt.hashSync(password,10)
         const user = await Users.create({
             email,
@@ -20,14 +28,20 @@ const register = async (req, res) => {
             createdAt: new Date(),
             updatedAt: new Date()
         })
-        res.json({message: "Usuario fue agregado correctamente", user})
 
-    } catch (error) {
-        res.json({
-            message: "Algo salio mal", error
+        const roleDefault = await Roles.findOne({where: {name: 'Cliente'}})
+        const userRole = await UserRoles.create({
+            user_id: user.id,
+            role_id: roleDefault.id,
+            createdAt: new Date(),
+            updatedAt: new Date()
         })
+
+        res.json({message: "Usuario fue agregado correctamente"})
+
     }
-};
+    
+}
 
 const findAll = async (_,response) => {
 

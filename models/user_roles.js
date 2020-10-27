@@ -5,7 +5,14 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class UserRoles extends Model {
     static associate(models) {
-      
+      UserRoles.belongsTo(models.Users, {
+        as: 'users',
+        foreignKey: 'user_id'
+      })
+      UserRoles.belongsTo(models.Roles, {
+        as: 'roles',
+        foreignKey: 'role_id'
+      })
     }
   };
   UserRoles.init({

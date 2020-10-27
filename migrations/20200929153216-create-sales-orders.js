@@ -9,13 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       order_date: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
+        allowNull: false
       },
       total: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL,
+        allowNull: false
       },
       coupon_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model:'coupons',
           key:'id'
@@ -23,6 +26,7 @@ module.exports = {
       },
       session_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:{
           model:'sessions',
           key:'id'
@@ -30,6 +34,7 @@ module.exports = {
       },
       user_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:{
           model:'users',
           key:'id'

@@ -23,6 +23,7 @@ const ac = new accessControl()
 //Borrar [clientes, cupones, status, categorias, sesiones]
 
 const roles = () => {
+
     ac.grant('Cliente')
         .readAny('products')
         .readOwn('sales_orders')
@@ -55,6 +56,7 @@ const roles = () => {
         .updateAny('product_statuses')
         .updateAny('product_categories')
         .updateAny('sessions')
+        .updateAny('products')
         .deleteAny('sales_orders')
         .deleteAny('cc_transactions')
         .deleteAny('order_products')
@@ -62,6 +64,8 @@ const roles = () => {
         .deleteAny('product_statuses')
         .deleteAny('product_categories')
         .deleteAny('sessions')
+        .deleteAny('categories')
+        .deleteAny('products')
     ac.grant('Administrador').extend('Gerente')
         .readAny('users')
         .readAny('user_roles')
@@ -69,12 +73,15 @@ const roles = () => {
         .createAny('users')
         .createAny('user_roles')
         .createAny('roles')
+        .createAny('products')
         .updateAny('users')
         .updateAny('user_roles')
+        .updateAny('categories')
         .updateAny('roles')
         .deleteAny('users')
         .deleteAny('user_roles')
         .deleteAny('roles')
+        
 
     return ac
     
