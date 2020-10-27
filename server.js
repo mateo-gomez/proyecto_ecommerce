@@ -14,6 +14,9 @@ const catRouter = require('./routes/categories')
 const psRouter = require('./routes/product_statuses')
 const productsRouter = require('./routes/products')
 const pcRouter = require('./routes/product_categories')
+const rolesRouter = require('./routes/roles')
+const tagsRouter = require('./routes/tags')
+const sessionsRouter = require('./routes/sessions')
 
 
 //Middleware
@@ -31,6 +34,9 @@ app.use(catRouter)
 app.use(psRouter)
 app.use(productsRouter)
 app.use(pcRouter)
+app.use(rolesRouter)
+app.use(tagsRouter)
+app.use(sessionsRouter)
 
 app.get('/', (_, response)=>{
     response.send("Hola mundo")
