@@ -30,6 +30,10 @@ app.use(morgan('dev'))
 app.use(cors())
 app.use(cookieParser())
 
+app.get('/', (_, response)=>{
+    response.send("Hola mundo")
+})
+
 //ROUTES
 app.use(authRouter)
 app.use(userRouter)
@@ -47,9 +51,5 @@ app.use(couponsRouter)
 app.use(soRouter)
 app.use(cctRouter)
 app.use(opRouter)
-
-app.get('/', (_, response)=>{
-    response.send("Hola mundo")
-})
 
 module.exports = app
