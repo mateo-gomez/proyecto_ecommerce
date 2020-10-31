@@ -1,6 +1,9 @@
-const {SalesOrders} = require('../models')
 
-const getSO = async(req, res)=>{
+const {OrderProducts} = require('../models')
+
+
+
+const getOP = async(req, res)=>{
 
     try {
 
@@ -12,10 +15,10 @@ const getSO = async(req, res)=>{
           };
 
         const getPagingData = (data, page, limit) => {
-            const { count: totalItems, rows: tutorials } = data;
+            const { count: totalItems, rows: items } = data;
             const currentPage = page ? +page : 0;
             const totalPages = Math.ceil(totalItems / limit);
-        return { totalItems, tutorials, totalPages, currentPage };
+        return { totalItems, items, totalPages, currentPage };
         };
 
         const { page, size, total } = req.query;
@@ -23,7 +26,7 @@ const getSO = async(req, res)=>{
 
         const { limit, offset } = getPagination(page, size);
 
-        await SalesOrders.findAndCountAll({ where: condition, limit, offset })
+        await OrderProducts.findAndCountAll({ where: condition, limit, offset })
             .then(data => {
                 const response = getPagingData(data, page, limit);
                 res.send(response);
@@ -41,36 +44,38 @@ const getSO = async(req, res)=>{
 
         res.json({
             message: 'Error en la petición',
-            error: error.message
+            error:error.message
         })
         
     }
 
 }
 
-const postSO = async(req, res)=>{
+const postOP = async(req, res)=>{
 
     try {
 
         const {
-            order_date,
-            total,
-            coupon_id,
-            session_id,
-            user_id
-        } = req.body
-        const so = await SalesOrders.create({
-            order_date,
-            total,
-            coupon_id,
-            session_id,
-            user_id
+            order_id,
+            sku,
+            name,
+            description,
+            price,
+            quantity,
+            subtotal
+        }= req.body
+        await OrderProducts.create({
+            order_id,
+            sku,
+            name,
+            description,
+            price,
+            quantity,
+            subtotal
         })
         res.json({
-            message: 'Orden de venta creada'
+            message: 'Producto de orden registrado'
         })
-
-
         
     } catch (error) {
 
@@ -83,38 +88,40 @@ const postSO = async(req, res)=>{
 
 }
 
-const putSO = async(req, res)=>{
+const putOP = async(req, res)=>{
 
     try {
 
         const id = req.params.id
-        const so = await SalesOrders.findOne({where: {id}})
-        if (so) {
+        const op = await OrderProducts.findOne({where: {id}})
+        if (op) {
 
             const {
-                order_date,
-                total,
-                coupon_id,
-                session_id,
-                user_id
+                order_id,
+                sku,
+                name,
+                description,
+                price,
+                quantity,
+                subtotal
             } = req.body
-
-            await SalesOrders.update({
-                order_date,
-                total,
-                coupon_id,
-                session_id,
-                user_id,
-                updatedAt: new Date()
+            await OrderProducts.update({
+                order_id,
+                sku,
+                name,
+                description,
+                price,
+                quantity,
+                subtotal
             }, {where: {id}})
             res.json({
-                message: 'Orden Actualizada'
+                message: 'Producto de orden actualizado'
             })
             
         } else {
 
             res.json({
-                message: 'Orden no encontrada'
+                message: 'Producto de orden no encontrado'
             })
             
         }
@@ -122,31 +129,30 @@ const putSO = async(req, res)=>{
     } catch (error) {
 
         res.json({
-            message: 'Error en la petición',
-            error: error.message
+            message: 'Error en la petición'
         })
         
     }
 
 }
 
-const deleteSO = async(req, res)=>{
+const deleteOP = async(req, res)=>{
 
     try {
 
         const id = req.params.id
-        const so = await SalesOrders.findOne({where: {id}})
-        if (so) {
+        const op = await OrderProducts.findOne({where: {id}})
+        if (op) {
 
-            await so.destroy()
+            await op.destroy()
             res.json({
-                message: 'Orden eliminada'
+                message: 'Producto de orden elimindado'
             })
             
         } else {
 
             res.json({
-                message: 'Orden no encontrada'
+                message: 'Producto de orden no encontrado'
             })
             
         }
@@ -163,8 +169,8 @@ const deleteSO = async(req, res)=>{
 }
 
 module.exports = {
-    getSO,
-    postSO,
-    putSO,
-    deleteSO
+    getOP,
+    postOP,
+    putOP,
+    deleteOP
 }

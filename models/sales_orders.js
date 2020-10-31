@@ -19,9 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       })
       SalesOrders.hasMany(models.CCTransactions, {
         as: 'cc_transactions',
+        foreignKey: 'id'
       })
       SalesOrders.hasMany(models.OrderProducts, {
         as: 'order_products',
+        foreignKey: 'id'
       })
     }
   };

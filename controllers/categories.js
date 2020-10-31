@@ -5,9 +5,7 @@ const addCategories = async(req, res)=>{
     try {
 
         const {name, parent_id} = req.body
-        const categoryExist = await Categories.findOne({
-            where: {name: name}
-        })
+        const categoryExist = await Categories.findOne({where: {name}})
         if (categoryExist) {
             res.json({
                 message: 'Categoria ya existe'
@@ -33,16 +31,50 @@ const addCategories = async(req, res)=>{
 
 }
 
-const getCategories = async(_, res)=>{
+const getCategories = async(req, res)=>{
 
     try {
 
-        const categories = await Categories.findAll()
-        res.json(categories)
+        const getPagination = (page, size) => {
+            const limit = size ? +size : 3;
+            const offset = page ? page * limit : 0;
+            return { limit, offset };
+        };
+
+        const getPagingData = (data, page, limit) => {
+            const { count: totalItems, rows: categories } = data;
+            const currentPage = page ? +page : 0;
+            const totalPages = Math.ceil(totalItems / limit);
+            return { totalItems, categories, totalPages, currentPage };
+        };
+
+        const { page, size, total } = req.query;
+        var condition = total ? { total } : null;
+        const { limit, offset } = getPagination(page, size);
+
+        await Categories.findAndCountAll({ where: condition, limit, offset, 
+            include:[{
+                        model: Categories,
+                        as: 'subcategories'
+                    }]
+        })
+        .then(data => {
+            const response = getPagingData(data, page, limit);
+            res.send(response);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                err.message || "Some error occurred while retrieving tutorials."
+            });
+        });
+        
+
         
     } catch (error) {
         res.json({
-            message: 'Credenciales incorrectas'
+            message: 'Error en petición',
+            error:error.message
         })
     }
 

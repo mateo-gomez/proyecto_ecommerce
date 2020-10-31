@@ -1,6 +1,7 @@
-const {SalesOrders} = require('../models')
+const {CCTransactions} = require('../models')
+const {generateToken} = require('./auth')
 
-const getSO = async(req, res)=>{
+const getCCT = async(req, res)=>{
 
     try {
 
@@ -9,13 +10,13 @@ const getSO = async(req, res)=>{
             const offset = page ? page * limit : 0;
           
             return { limit, offset };
-          };
+        };
 
         const getPagingData = (data, page, limit) => {
-            const { count: totalItems, rows: tutorials } = data;
+            const { count: totalItems, rows: transactions } = data;
             const currentPage = page ? +page : 0;
             const totalPages = Math.ceil(totalItems / limit);
-        return { totalItems, tutorials, totalPages, currentPage };
+            return { totalItems, transactions, totalPages, currentPage };
         };
 
         const { page, size, total } = req.query;
@@ -23,7 +24,7 @@ const getSO = async(req, res)=>{
 
         const { limit, offset } = getPagination(page, size);
 
-        await SalesOrders.findAndCountAll({ where: condition, limit, offset })
+        await CCTransactions.findAndCountAll({ where: condition, limit, offset })
             .then(data => {
                 const response = getPagingData(data, page, limit);
                 res.send(response);
@@ -48,29 +49,34 @@ const getSO = async(req, res)=>{
 
 }
 
-const postSO = async(req, res)=>{
+const postCCT = async(req, res)=>{
 
     try {
 
         const {
-            order_date,
-            total,
-            coupon_id,
-            session_id,
-            user_id
+            order_id,
+            transdate,
+            processor,
+            processor_trans_id,
+            amount,
+            cc_num,
+            cc_type,
+            responde
         } = req.body
-        const so = await SalesOrders.create({
-            order_date,
-            total,
-            coupon_id,
-            session_id,
-            user_id
+        await CCTransactions.create({
+            code: generateToken(8),
+            order_id,
+            transdate,
+            processor,
+            processor_trans_id,
+            amount,
+            cc_num,
+            cc_type,
+            responde
         })
         res.json({
-            message: 'Orden de venta creada'
+            message: 'Transacción registrada'
         })
-
-
         
     } catch (error) {
 
@@ -83,38 +89,43 @@ const postSO = async(req, res)=>{
 
 }
 
-const putSO = async(req, res)=>{
+const putCCT = async(req, res)=>{
 
     try {
 
         const id = req.params.id
-        const so = await SalesOrders.findOne({where: {id}})
-        if (so) {
+        const cct = await CCTransactions.findOne({where: {id}})
+
+        if (cct) {
 
             const {
-                order_date,
-                total,
-                coupon_id,
-                session_id,
-                user_id
+                order_id,
+                transdate,
+                processor,
+                processor_trans_id,
+                amount,
+                cc_num,
+                cc_type,
+                responde
             } = req.body
-
-            await SalesOrders.update({
-                order_date,
-                total,
-                coupon_id,
-                session_id,
-                user_id,
-                updatedAt: new Date()
+            await CCTransactions.update({
+                order_id,
+                transdate,
+                processor,
+                processor_trans_id,
+                amount,
+                cc_num,
+                cc_type,
+                responde
             }, {where: {id}})
             res.json({
-                message: 'Orden Actualizada'
+                message: 'Transacción actualizada'
             })
             
         } else {
 
             res.json({
-                message: 'Orden no encontrada'
+                message: 'Transacción no encontrada'
             })
             
         }
@@ -130,23 +141,23 @@ const putSO = async(req, res)=>{
 
 }
 
-const deleteSO = async(req, res)=>{
+const deleteCCT = async(req, res)=>{
 
     try {
 
         const id = req.params.id
-        const so = await SalesOrders.findOne({where: {id}})
-        if (so) {
+        const cct = await CCTransactions.findOne({where:{id}})
+        if (cct) {
 
-            await so.destroy()
+            await cct.destroy()
             res.json({
-                message: 'Orden eliminada'
+                message: 'Transacción eliminada'
             })
             
         } else {
 
             res.json({
-                message: 'Orden no encontrada'
+                message: 'Transacción no encontrada'
             })
             
         }
@@ -159,12 +170,12 @@ const deleteSO = async(req, res)=>{
         })
         
     }
-
+    
 }
 
 module.exports = {
-    getSO,
-    postSO,
-    putSO,
-    deleteSO
+    getCCT,
+    postCCT,
+    putCCT,
+    deleteCCT
 }

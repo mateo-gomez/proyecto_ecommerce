@@ -20,6 +20,8 @@ const sessionsRouter = require('./routes/sessions')
 const ptRouter = require('./routes/product_tags')
 const couponsRouter = require('./routes/coupons')
 const soRouter = require('./routes/sales_orders')
+const cctRouter = require('./routes/cc_transactions')
+const opRouter = require('./routes/order_products')
 
 
 //Middleware
@@ -43,6 +45,8 @@ app.use(sessionsRouter)
 app.use(ptRouter)
 app.use(couponsRouter)
 app.use(soRouter)
+app.use(cctRouter)
+app.use(opRouter)
 
 app.get('/', (_, response)=>{
     response.send("Hola mundo")

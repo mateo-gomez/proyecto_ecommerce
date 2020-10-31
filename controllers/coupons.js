@@ -1,12 +1,42 @@
 const {Coupons} = require('../models')
 const {generateToken} = require('../controllers/auth')
 
-const getCoupones = async(_, res)=>{
+const getCoupones = async(req, res)=>{
 
     try {
 
-        const coupones = await Coupons.findAll()
-        res.json(coupones)
+        const getPagination = (page, size) => {
+            const limit = size ? +size : 3;
+            const offset = page ? page * limit : 0;
+          
+            return { limit, offset };
+          };
+
+        const getPagingData = (data, page, limit) => {
+            const { count: totalItems, rows: coupons } = data;
+            const currentPage = page ? +page : 0;
+            const totalPages = Math.ceil(totalItems / limit);
+        return { totalItems, coupons, totalPages, currentPage };
+        };
+
+        const { page, size, total } = req.query;
+        var condition = total ? { total } : null;
+
+        const { limit, offset } = getPagination(page, size);
+
+        await Coupons.findAndCountAll({ where: condition, limit, offset })
+            .then(data => {
+                const response = getPagingData(data, page, limit);
+                res.send(response);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                    err.message || "Some error occurred while retrieving tutorials."
+                });
+            });
+        
+
         
     } catch (error) {
 

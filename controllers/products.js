@@ -1,19 +1,48 @@
 const {Products, ProductStatuses, ProductCategories} = require('../models')
 
 
-const getProducts = async(_, res)=>{
+const getProducts = async(req, res)=>{
     
     try {
 
-        const products = await Products.findAll({
-            include: [
-            {
-                model: ProductStatuses,
-                as: 'product_statuses',
-                attributes: ['id', 'name']
-            }]
+        const getPagination = (page, size) => {
+            const limit = size ? +size : 3;
+            const offset = page ? page * limit : 0;
+          
+            return { limit, offset };
+          };
+
+        const getPagingData = (data, page, limit) => {
+            const { count: totalItems, rows: products } = data;
+            const currentPage = page ? +page : 0;
+            const totalPages = Math.ceil(totalItems / limit);
+        return { totalItems, products, totalPages, currentPage };
+        };
+
+        const { page, size, total } = req.query;
+        var condition = total ? { total } : null;
+
+        const { limit, offset } = getPagination(page, size);
+
+        await Products.findAndCountAll({ where: condition, limit, offset,
+            include:[{
+                        model: ProductStatuses,
+                        as: 'status',
+                        attributes: ['id', 'name']
+                    }]
         })
-        res.json(products)
+            .then(data => {
+                const response = getPagingData(data, page, limit);
+                res.send(response);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                    err.message || "Some error occurred while retrieving tutorials."
+                });
+            });
+        
+
         
     } catch (error) {
         res.json({
