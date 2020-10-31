@@ -32,8 +32,8 @@ app.use(cookieParser())
 
 //ROUTES
 app.use(authRouter)
-app.use(validationToken)
 app.use(userRouter)
+app.use(validationToken)
 app.use(userRolesRouter)
 app.use(catRouter)
 app.use(psRouter)
