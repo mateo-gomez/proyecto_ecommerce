@@ -10,7 +10,7 @@
     ]
   },
   "scripts": {
-    "start": "index.js",
+    "start": "node index.js",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },
